@@ -1,5 +1,5 @@
-== README
+== Albin auth
 
-Things you may want to cover:
+My own shot at a single sign on service. This is to be used as an api.
 
 * Ruby version 2.2
