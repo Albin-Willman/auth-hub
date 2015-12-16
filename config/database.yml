@@ -1,0 +1,28 @@
+<% db_socket = ENV['DEV_MYSQL_SOCKET'] || '/tmp/mysql.sock' %>
+
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  username: albin_auth
+  password: ZYKLjAQrZkvJhCbdfGbJahq6
+  socket: /var/run/mysqld/mysqld.sock
+
+development:
+  <<: *default
+  username: root
+  database: albin_auth_development
+  socket: <%= db_socket %>
+  password:
+
+test:
+  <<: *default
+  username: root
+  database: albin_auth_test
+  socket: <%= db_socket %>
+  password:
+
+production:
+  <<: *default
+  database: albin_auth_production
