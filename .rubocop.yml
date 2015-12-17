@@ -1,0 +1,14 @@
+AllCops:
+  RunRailsCops: true
+  Exclude:
+    - db/schema.rb
+    - db/migrate/*
+    - spec/factories/*
+    - script/collectd/**/*
+    - config/initializers/secret_token.rb
+    - config/application.rb
+    - vendor/bundle/**/*
+    - bin/**/*
+    - tmp/**/*
+    - Rakefile
+    - Gemfile
