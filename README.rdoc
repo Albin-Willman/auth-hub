@@ -1,5 +1,0 @@
-== Albin auth
-
-My own shot at a single sign on service. This is to be used as an api.
-
-* Ruby version 2.2
