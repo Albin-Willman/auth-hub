@@ -10,7 +10,8 @@ gem 'active_model_serializers'
 gem 'apipie-rails', '~> 0.3' # Easy API documentation
 gem 'maruku', '~> 0.7' # Needed for apipie-rails markdown support
 
-gem 'authlogic'
+gem 'bcrypt'
+gem 'has_secure_token'
 
 group :production do
   gem 'pg'

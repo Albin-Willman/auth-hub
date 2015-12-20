@@ -1,7 +1,28 @@
 # Users
 class User < ActiveRecord::Base
-  acts_as_authentic do |c|
-    c.require_password_confirmation = false
-    c.merge_validates_length_of_password_field_options(minimum: 8)
+  has_secure_password
+  has_secure_token
+  validates :email, uniqueness: true, presence: true
+
+  has_many :tokens
+
+  def activate!
+    active = true
+    save!
+    regenerate_token && true
   end
 end
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :integer          not null, primary key
+#  email           :string(255)
+#  name            :string(255)
+#  password_digest :string(255)
+#  token           :string(255)
+#  active          :boolean          default(FALSE)
+#  created_at      :datetime
+#  updated_at      :datetime
+#

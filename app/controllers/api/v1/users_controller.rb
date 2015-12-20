@@ -17,7 +17,18 @@ module Api
         end
       end
 
-      api :PATCH, '/v1/users/', 'Update user'
+      api :GET, '/v1/users/:token/activate', 'Activate user'
+      description 'Activates a user acount.'
+      def activate
+        @user = User.find_by(token: params[:token])
+        if @user && @user.activate!
+          render json: { activated: true }, status: :ok
+        else
+          render json: { activated: false }, status: :unprocessable_entity
+        end
+      end
+
+      api :PATCH, '/v1/users/:id', 'Update user'
       description 'Updates and returns a user.'
       param :user, Hash, desc: 'User attributes', required: true do
         param :email, String, desc: 'Email', required: true
@@ -31,7 +42,7 @@ module Api
         end
       end
 
-      api :DELETE, '/v1/users/', 'Delete user'
+      api :DELETE, '/v1/users/:id', 'Delete user'
       description 'Deletes a user if authorized.'
       param :user, Hash, desc: 'User attributes', required: true do
         param :email, String, desc: 'Email', required: true
@@ -48,7 +59,7 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:email, :password)
+        params.require(:user).permit(:email, :password, :name)
       end
     end
   end
