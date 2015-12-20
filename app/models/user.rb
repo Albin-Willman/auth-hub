@@ -3,12 +3,12 @@ class User < ActiveRecord::Base
   has_secure_password
   has_secure_token
   validates :email, uniqueness: true, presence: true
+  has_many :tokens, dependent: :destroy
 
-  has_many :tokens
+  # scope :active, -> { where(active: true) }
 
   def activate!
-    active = true
-    save!
+    update_attributes!(active: true)
     regenerate_token && true
   end
 end

@@ -4,7 +4,9 @@ Rails.application.routes.draw do
       resources :users, only: [:create, :update, :destroy] do
         collection do
           get ':token/activate', to: 'users#activate'
+          post 'login'
         end
+        resources :tokens, only: [:index] 
       end
     end
   end

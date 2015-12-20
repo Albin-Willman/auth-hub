@@ -1,6 +1,7 @@
 class Token < ActiveRecord::Base
   belongs_to :user
   validates :user, presence: true
+  has_secure_token
 end
 
 # == Schema Information
