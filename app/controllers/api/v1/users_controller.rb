@@ -2,7 +2,9 @@ module Api
   module V1
     # Handle requests concerning users
     class UsersController < Api::V1::ApplicationController
-      before_action :find_user, except: [:create, :activate, :login]
+      NON_USER_ACTIONS = [:create, :activate, :login]
+      before_action :find_user, except: NON_USER_ACTIONS
+      before_action :authenticate, except: NON_USER_ACTIONS
 
       api :POST, '/v1/users/', 'Create new user'
       description 'Creates and returns a new user.'
@@ -72,7 +74,26 @@ module Api
         end
       end
 
+      api :DELETE, '/v1/users/:id/logout', 'Logout'
+      description 'Authorizes a user.'
+      param :service, String, desc: 'The service you are loging out from.'
+      param :all_services, ['true'], 
+        desc: 'If true this will log out all services you have active.'
+      def logout
+        tokens = find_tokens(params[:all_services], params[:service])
+        if tokens.destroy_all
+          render json: true,  status: :ok
+        else
+          render json: false, status: :unprocessable_entity
+        end
+      end
+
       private
+
+      def find_tokens(all_services = false, service)
+        return @user.tokens if all_services
+        @user.tokens.where(service: service)
+      end
 
       def find_or_create_token(user, service)
         token = Token.find_or_initialize_by(user: user, service: params[:service])

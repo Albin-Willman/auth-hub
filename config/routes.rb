@@ -6,9 +6,14 @@ Rails.application.routes.draw do
           get ':token/activate', to: 'users#activate'
           post 'login'
         end
+        member do
+          delete 'logout'
+        end
         resources :tokens, only: [:index] 
       end
+      get 'verify', to: 'tokens#verify'
     end
   end
+
   apipie
 end
