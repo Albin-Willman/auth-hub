@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true, presence: true
   has_many :tokens, dependent: :destroy
 
-  # scope :active, -> { where(active: true) }
+  scope :active, -> { where(active: true) }
 
   def activate!
     update_attributes!(active: true)
