@@ -28,13 +28,13 @@ describe User do
     end
   end
 
-  context 'Autorization' do
+  context 'Authentification' do
     it 'can verify a correct password' do
-      expect(user.authorize('123456')).to eq(user)
+      expect(user.authenticate('123456')).to eq(user)
     end
 
     it 'can refute a bad password' do
-      expect(user.authorize('asdasdasd')).to eq(false)
+      expect(user.authenticate('asdasdasd')).to eq(false)
     end
   end
 end
