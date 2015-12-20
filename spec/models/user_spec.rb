@@ -27,4 +27,14 @@ describe User do
       expect(User.active.count).to eq(1)
     end
   end
+
+  context 'Autorization' do
+    it 'can verify a correct password' do
+      expect(user.authorize('123456')).to eq(user)
+    end
+
+    it 'can refute a bad password' do
+      expect(user.authorize('asdasdasd')).to eq(false)
+    end
+  end
 end
