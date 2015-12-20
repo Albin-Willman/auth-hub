@@ -77,7 +77,7 @@ module Api
       api :DELETE, '/v1/users/:id/logout', 'Logout'
       description 'Authorizes a user.'
       param :service, String, desc: 'The service you are loging out from.'
-      param :all_services, ['true'], 
+      param :all_services, ['true'],
         desc: 'If true this will log out all services you have active.'
       def logout
         tokens = find_tokens(params[:all_services], params[:service])

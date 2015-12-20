@@ -12,3 +12,4 @@ AllCops:
     - tmp/**/*
     - Rakefile
     - Gemfile
+    - lib/tasks/auto_annotate_models.rake
