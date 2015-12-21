@@ -1,7 +1,7 @@
 # Load the Rails application.
 require File.expand_path('../application', __FILE__)
 env_vars = File.join(Rails.root, 'config', 'app_environment_variables.rb')
-load(app_environment_variables) if File.exist?(env_vars)
+load(env_vars) if File.exist?(env_vars)
 # Initialize the Rails application.
 ActionMailer::Base.smtp_settings = {
   address:         'smtp.sendgrid.net',
