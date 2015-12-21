@@ -1,3 +1,4 @@
+# All valid tokens used to auth users
 class Token < ActiveRecord::Base
   belongs_to :user
   validates :user, presence: true

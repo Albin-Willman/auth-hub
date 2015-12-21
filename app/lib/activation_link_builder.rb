@@ -1,3 +1,4 @@
+# Build acctivation links
 class ActivationLinkBuilder
   def initialize(domain, user)
     @domain = domain

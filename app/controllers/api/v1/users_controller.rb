@@ -79,7 +79,7 @@ module Api
       description 'Authorizes a user.'
       param :service, String, desc: 'The service you are loging out from.'
       param :all_services, ['true'],
-        desc: 'If true this will log out all services you have active.'
+            desc: 'If true this will log out all services you have active.'
       def logout
         tokens = find_tokens(params[:all_services], params[:service])
         if tokens.destroy_all
@@ -91,13 +91,13 @@ module Api
 
       private
 
-      def find_tokens(all_services = false, service)
+      def find_tokens(all_services, service)
         return @user.tokens if all_services
         @user.tokens.where(service: service)
       end
 
       def find_or_create_token(user, service)
-        token = Token.find_or_initialize_by(user: user, service: params[:service])
+        token = Token.find_or_initialize_by(user: user, service: service)
         token.save && token
       end
 

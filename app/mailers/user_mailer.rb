@@ -1,5 +1,5 @@
+# Handle mails to users
 class UserMailer < ActionMailer::Base
-  
   default from: 'salbin.reminders@gmail.com'
 
   def activation_email(user)

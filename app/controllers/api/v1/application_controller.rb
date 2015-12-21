@@ -6,7 +6,7 @@ module Api
       include ActionController::HttpAuthentication::Token::ControllerMethods
 
       def authenticate
-        authenticate_or_request_with_http_token do |token, options|
+        authenticate_or_request_with_http_token do |token, _options|
           @token = Token.find_by(token: token)
         end
       end
