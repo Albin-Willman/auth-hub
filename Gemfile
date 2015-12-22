@@ -31,6 +31,7 @@ end
 group :test do
   gem 'rspec-rails', '~> 3.4'
   gem 'regressor', '~> 0.6'
+  gem 'faker'
   gem 'codeclimate-test-reporter', require: false
   gem 'simplecov', '~> 0.11', require: false
   gem 'factory_girl_rails', '~> 4.0'

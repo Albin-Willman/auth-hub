@@ -187,6 +187,7 @@ DEPENDENCIES
   database_cleaner (~> 1.5)
   did_you_mean
   factory_girl_rails (~> 4.0)
+  faker
   has_secure_token
   maruku (~> 0.7)
   mysql2

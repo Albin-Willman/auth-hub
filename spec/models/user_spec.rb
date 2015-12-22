@@ -7,6 +7,7 @@ describe User do
     expect(user.email).to eq('test@example.com')
     expect(user.valid?).to be_truthy
   end
+
   context 'Activation' do
     it 'Can be activated' do
       expect(user.active).to eq(false)

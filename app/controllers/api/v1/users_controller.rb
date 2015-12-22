@@ -2,6 +2,7 @@ module Api
   module V1
     # Handle requests concerning users
     class UsersController < Api::V1::ApplicationController
+      include ErrorSerializer
       NON_USER_ACTIONS = [:create, :activate, :login]
       before_action :authenticate, except: NON_USER_ACTIONS
       before_action :find_user, except: NON_USER_ACTIONS
@@ -45,7 +46,7 @@ module Api
         if current_user.update_attributes(user_params)
           render json: current_user, status: :ok
         else
-          render json: current_user.errors, status: :unprocessable_entity
+          render json: ErrorSerializer.serialize(current_user.errors), status: :unprocessable_entity
         end
       end
 

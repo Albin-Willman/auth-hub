@@ -130,5 +130,25 @@ describe 'Users API' do
       expect(updated_user.email).to eq('new_email@example.com')
       expect(updated_user.authenticate('asdasd')).to be_truthy
     end
+
+    it 'can not update a user if the email is taken' do
+      token = create(:token)
+      blocking_user = create(:user, email: 'blocking_email@example.com')
+      patch '/api/v1/users',
+            {
+              user: {
+                name: 'new name',
+                email: blocking_user.email,
+                password: 'asdasd'
+              }
+            },
+            authorization: build_auth(token.token)
+
+      expect(response).to have_http_status(422)
+      expect(json['errors'].length).to eq(1)
+      error = json['errors'].first
+      expect(error['id']).to eq('email')
+      expect(error['title']).to eq('Email has already been taken')
+    end
   end
 end
