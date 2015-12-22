@@ -57,7 +57,8 @@ module Api
         if current_user.destroy
           render json: true, status: :ok
         else
-          render json: false, status: :unprocessable_entity
+          render json: ErrorSerializer.serialize(current_user.errors),
+                 status: :unprocessable_entity
         end
       end
 
