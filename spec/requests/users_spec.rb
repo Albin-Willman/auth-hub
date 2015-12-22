@@ -175,6 +175,22 @@ describe 'Users API' do
       expect(mail.to).to eq([new_user.email])
       expect(mail.from).to eq(['salbin.reminders@gmail.com'])
     end
+
+    it 'fails if the email is taken' do
+      blocking_user = create(:user, email: 'blocking_email@example.com')
+      user_hash = {
+        name: 'new name',
+        email: blocking_user.email,
+        password: 'asdasd'
+      }
+      post '/api/v1/users', user: user_hash
+
+      expect(response).to have_http_status(422)
+      expect(json['errors'].length).to eq(1)
+      error = json['errors'].first
+      expect(error['id']).to eq('email')
+      expect(error['title']).to eq('Email has already been taken')
+    end
   end
 
   def verify_user_data(data, db_user, user_hash)

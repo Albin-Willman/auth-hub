@@ -19,7 +19,8 @@ module Api
           UserMailer.activation_email(@user).deliver_now
           render json: @user, status: :created
         else
-          render json: @user.errors, status: :unprocessable_entity
+          render json: ErrorSerializer.serialize(@user.errors),
+                 status: :unprocessable_entity
         end
       end
 
