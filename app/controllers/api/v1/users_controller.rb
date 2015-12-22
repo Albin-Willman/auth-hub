@@ -5,7 +5,6 @@ module Api
       include ErrorSerializer
       NON_USER_ACTIONS = [:create, :activate, :login]
       before_action :authenticate, except: NON_USER_ACTIONS
-      before_action :find_user, except: NON_USER_ACTIONS
 
       api :POST, '/v1/users/', 'Create new user'
       description 'Creates and returns a new user.'
@@ -100,10 +99,6 @@ module Api
       def find_or_create_token(user, service)
         token = Token.find_or_initialize_by(user: user, service: service)
         token.save && token
-      end
-
-      def find_user
-        @user = @token.user
       end
 
       def user_params
