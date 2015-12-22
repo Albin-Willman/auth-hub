@@ -34,26 +34,26 @@ module Api
         end
       end
 
-      api :PATCH, '/v1/users/:id', 'Update user'
+      api :PATCH, '/v1/users/', 'Update user'
       description 'Updates and returns a user.'
       param :user, Hash, desc: 'User attributes', required: true do
-        param :email, String, desc: 'Email', required: true
-        param :password, String, desc: 'Password', required: true
+        param :email, String, desc: 'Email'
+        param :password, String, desc: 'Password'
         param :name, String, desc: 'Name'
       end
       def update
-        if @user && @user.update_attributes(user_params)
-          render json: @user, status: :updated
+        if current_user.update_attributes(user_params)
+          render json: current_user, status: :ok
         else
-          render json: @user && @user.errors, status: :unprocessable_entity
+          render json: current_user.errors, status: :unprocessable_entity
         end
       end
 
-      api :DELETE, '/v1/users/:id', 'Delete user'
+      api :DELETE, '/v1/users/', 'Delete user'
       description 'Deletes a user if authorized.'
       def destroy
-        if @user && @user.destroy
-          render json: true, status: :destroyed
+        if current_user.destroy
+          render json: true, status: :ok
         else
           render json: false, status: :unprocessable_entity
         end
@@ -92,8 +92,8 @@ module Api
       private
 
       def find_tokens(all_services, service)
-        return @user.tokens if all_services
-        @user.tokens.where(service: service)
+        return current_user.tokens if all_services
+        current_user.tokens.where(service: service)
       end
 
       def find_or_create_token(user, service)

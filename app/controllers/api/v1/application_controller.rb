@@ -10,6 +10,12 @@ module Api
           @token = Token.find_by(token: token)
         end
       end
+
+      protected
+
+      def current_user
+        @user ||= @token.try(:user) || NilUser.new
+      end
     end
   end
 end

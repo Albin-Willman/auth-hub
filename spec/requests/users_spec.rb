@@ -79,4 +79,58 @@ describe 'Users API' do
       expect(response.body).to eq("HTTP Token: Access denied.\n")
     end
   end
+
+  context 'destroy' do
+    it 'can destroy an authed user' do
+      token = create(:token)
+      delete "/api/v1/users", nil,
+             authorization: build_auth(token.token)
+
+      expect(response).to be_success
+      expect(response.body).to eq("true")
+
+      expect(Token.find_by(id: token.id)).to be_nil
+      expect(User.find_by(id: token.user_id)).to be_nil
+    end
+
+    it 'can not destroy an unauthed user' do
+      delete "/api/v1/users", nil,
+             authorization: build_auth(user.token)
+
+      expect(response).to have_http_status(401)
+      expect(response.body).to eq("HTTP Token: Access denied.\n")
+
+      expect(User.find_by(id: user.id)).to_not be_nil
+    end
+  end
+
+  context 'update' do
+    it 'can update a user' do
+      token = create(:token)
+      patch "/api/v1/users",
+            {
+              user: {
+                name: 'new name',
+                email: 'new_email@example.com',
+                password: 'asdasd'
+              }
+            },
+            authorization: build_auth(token.token)
+      expect(response).to be_success
+      data = json['data']
+      expect(data['type']).to eq('users')
+      expect(data['id']).to eq(token.user_id.to_s)
+      attributes = data['attributes']
+      expect(attributes.length).to eq(2)
+      expect(attributes['name']).to eq('new name')
+      expect(attributes['email']).to eq('new_email@example.com')
+
+      updated_user = User.find(token.user_id)
+
+      expect(updated_user.name).to eq('new name')
+      expect(updated_user.email).to eq('new_email@example.com')
+      expect(updated_user.authenticate('asdasd')).to be_truthy
+
+    end
+  end
 end
