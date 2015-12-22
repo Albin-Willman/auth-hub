@@ -86,7 +86,7 @@ module Api
       def logout
         tokens = find_tokens(params[:all_services], params[:service])
         if tokens.any? && tokens.destroy_all
-          render json: true,  status: :ok
+          render json: true, status: :ok
         else
           render json: false, status: :unprocessable_entity
         end
