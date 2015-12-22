@@ -5,7 +5,7 @@ gem 'rails', '4.2.5'
 gem 'rails-api'
 gem 'puma'
 gem 'rack-cors', :require => 'rack/cors'
-gem 'active_model_serializers'
+gem 'active_model_serializers', '~> 0.10.0.rc3'
 
 gem 'apipie-rails', '~> 0.3' # Easy API documentation
 gem 'maruku', '~> 0.7' # Needed for apipie-rails markdown support
