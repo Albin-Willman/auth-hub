@@ -20,7 +20,7 @@ module Api
       private
 
       def find_user
-        @user = User.find(params[:user_id])
+        @user = @token.user
       end
     end
   end
