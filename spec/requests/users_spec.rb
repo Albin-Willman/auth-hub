@@ -47,7 +47,7 @@ describe 'Users API' do
   context 'logout' do
     it 'can log out a logged in user' do
       token = create(:token)
-      delete "/api/v1/users/logout",
+      delete '/api/v1/users/logout',
              { service: 'rspec' },
              authorization: build_auth(token.token)
 
@@ -59,7 +59,7 @@ describe 'Users API' do
 
     it 'can not log a user from a service that it is not logged in to' do
       token = create(:token)
-      delete "/api/v1/users/logout",
+      delete '/api/v1/users/logout',
              { service: 'dummy-service' },
              authorization: build_auth(token.token)
 
@@ -70,8 +70,7 @@ describe 'Users API' do
     end
 
     it 'can not log out a user if the request is unauthed' do
-      token = create(:token)
-      delete "/api/v1/users/logout",
+      delete '/api/v1/users/logout',
              { service: 'rspec' },
              authorization: build_auth('badtoken')
 
@@ -83,18 +82,18 @@ describe 'Users API' do
   context 'destroy' do
     it 'can destroy an authed user' do
       token = create(:token)
-      delete "/api/v1/users", nil,
+      delete '/api/v1/users', nil,
              authorization: build_auth(token.token)
 
       expect(response).to be_success
-      expect(response.body).to eq("true")
+      expect(response.body).to eq('true')
 
       expect(Token.find_by(id: token.id)).to be_nil
       expect(User.find_by(id: token.user_id)).to be_nil
     end
 
     it 'can not destroy an unauthed user' do
-      delete "/api/v1/users", nil,
+      delete '/api/v1/users', nil,
              authorization: build_auth(user.token)
 
       expect(response).to have_http_status(401)
@@ -107,7 +106,7 @@ describe 'Users API' do
   context 'update' do
     it 'can update a user' do
       token = create(:token)
-      patch "/api/v1/users",
+      patch '/api/v1/users',
             {
               user: {
                 name: 'new name',
@@ -130,7 +129,6 @@ describe 'Users API' do
       expect(updated_user.name).to eq('new name')
       expect(updated_user.email).to eq('new_email@example.com')
       expect(updated_user.authenticate('asdasd')).to be_truthy
-
     end
   end
 end

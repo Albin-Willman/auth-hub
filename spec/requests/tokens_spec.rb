@@ -5,7 +5,7 @@ describe 'Tokens API' do
     it 'retrieves a token list' do
       token = FactoryGirl.create(:token)
       FactoryGirl.create(:token, user: token.user)
-      get "/api/v1/users/tokens", nil,
+      get '/api/v1/users/tokens', nil,
           authorization: build_auth(token.token)
 
       # test for the 200 status-code
@@ -24,7 +24,7 @@ describe 'Tokens API' do
     it 'fails if it has a bad token' do
       token = FactoryGirl.create(:token)
       FactoryGirl.create(:token, user: token.user)
-      get "/api/v1/users/tokens", nil,
+      get '/api/v1/users/tokens', nil,
           authorization: build_auth('badtoken')
       expect(response).to have_http_status(401)
       expect(response.body).to eq("HTTP Token: Access denied.\n")

@@ -1,5 +1,5 @@
+# Class to act as user if no user is present
 class NilUser
-
   def destroy
     false
   end
