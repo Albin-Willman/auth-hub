@@ -18,10 +18,12 @@ development:
 
 test:
   <<: *default
-  username: root
+  username: <%= ENV['TEST_MYSQL_USER'] || 'root' %>
   database: albin_auth_test
   socket: <%= db_socket %>
   password:
+
+
 
 production:
   <<: *default
