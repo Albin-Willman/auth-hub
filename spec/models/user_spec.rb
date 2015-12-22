@@ -8,6 +8,19 @@ describe User do
     expect(user.valid?).to be_truthy
   end
 
+  context 'find_by_token' do
+    it 'finds a user if it has a correct token' do
+      res = described_class.find_by_token(user.token)
+      expect(res).to eq(user)
+    end
+
+    it 'returns a nil user if it has a bad token' do
+      res = described_class.find_by_token(user.token + 'fault')
+      expect(res).to be_a(NilUser)
+    end
+
+  end
+
   context 'Activation' do
     it 'Can be activated' do
       expect(user.active).to eq(false)

@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
 
+  def self.find_by_token(token)
+    find_by(token: token) || NilUser.new
+  end
+
   def activate!
     update_attributes!(active: true)
     regenerate_token && true

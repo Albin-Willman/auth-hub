@@ -27,7 +27,7 @@ module Api
       api :GET, '/v1/users/:token/activate', 'Activate user'
       description 'Activates a user acount.'
       def activate
-        @user = User.find_by(token: params[:token]) || NilUser.new
+        @user = User.find_by_token(params[:token])
         if @user.activate!
           render json: { activated: true }, status: :ok
         else
