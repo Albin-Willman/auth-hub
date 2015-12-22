@@ -15,4 +15,8 @@ class NilUser
   def tokens
     Token.none
   end
+
+  def activate!
+    false
+  end
 end

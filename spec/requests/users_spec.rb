@@ -151,4 +151,24 @@ describe 'Users API' do
       expect(error['title']).to eq('Email has already been taken')
     end
   end
+
+  context 'activation' do
+    it 'can activate a unautorized user' do
+      expect(user.active).to be_falsy
+      get "/api/v1/users/#{user.token}/activate"
+
+      user.reload
+      expect(user.active).to be_truthy
+      expect(response).to be_success
+      expect(response.body).to eq('{"activated":true}')
+    end
+
+    it 'can not activate a user with a faulty token' do
+      get "/api/v1/users/#{user.token}-fault/activate"
+      user.reload
+      expect(user.active).to be_falsy
+      expect(response).to have_http_status(422)
+      expect(response.body).to eq('{"activated":false}')
+    end
+  end
 end

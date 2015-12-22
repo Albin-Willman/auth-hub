@@ -14,6 +14,10 @@ describe NilUser do
     expect(subject.tokens.any?).to be_falsey
   end
 
+  it 'has can not be activated' do
+    expect(subject.activate!).to be_falsey
+  end
+
   it 'has an error' do
     expect(subject.errors).to eq(['No user'])
   end
