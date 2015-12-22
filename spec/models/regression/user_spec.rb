@@ -16,7 +16,9 @@ RSpec.describe User, regressor: true do
 
   # === Validations (Length) ===
   it { is_expected.to allow_value(Faker::Lorem.characters(72)).for :password }
-  it { is_expected.not_to allow_value(Faker::Lorem.characters(73)).for :password }
+  it do
+    is_expected.not_to allow_value(Faker::Lorem.characters(73)).for :password
+  end
 
   # === Validations (Presence) ===
   it { is_expected.to validate_presence_of :email }

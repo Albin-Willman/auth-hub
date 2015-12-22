@@ -1,3 +1,4 @@
+# Used to build error meeages for active record objects
 module ErrorSerializer
   def self.serialize(errors)
     return if errors.nil?

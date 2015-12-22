@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ActivationLinkBuilder do
   let(:user) { create(:user) }
-  let(:domain) { 'http://dummy.com' }
+  let(:domain) { 'http://dummy.com/' }
 
   it 'builds a link' do
     res = described_class.new(domain, user).build

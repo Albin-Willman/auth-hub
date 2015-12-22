@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe NilUser do
-  let (:subject) { described_class.new }
+  let(:subject) { described_class.new }
   it 'cannot be destroyed' do
     expect(subject.destroy).to be_falsey
   end

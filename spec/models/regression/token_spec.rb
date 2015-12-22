@@ -13,7 +13,7 @@ RSpec.describe Token, regressor: true do
   it { is_expected.to have_db_column :updated_at }
 
   # === Database (Indexes) ===
-  it { is_expected.to have_db_index ["user_id"] }
+  it { is_expected.to have_db_index ['user_id'] }
 
   # === Validations (Presence) ===
   it { is_expected.to validate_presence_of :user }

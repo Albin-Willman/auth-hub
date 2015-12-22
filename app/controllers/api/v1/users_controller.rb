@@ -45,7 +45,8 @@ module Api
         if current_user.update_attributes(user_params)
           render json: current_user, status: :ok
         else
-          render json: ErrorSerializer.serialize(current_user.errors), status: :unprocessable_entity
+          render json: ErrorSerializer.serialize(current_user.errors),
+                 status: :unprocessable_entity
         end
       end
 

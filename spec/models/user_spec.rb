@@ -18,7 +18,6 @@ describe User do
       res = described_class.find_by_token(user.token + 'fault')
       expect(res).to be_a(NilUser)
     end
-
   end
 
   context 'Activation' do

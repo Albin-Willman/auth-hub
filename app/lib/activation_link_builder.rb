@@ -6,6 +6,6 @@ class ActivationLinkBuilder
   end
 
   def build
-    "#{@domain}/api/v1/users/#{@user.token}/activate"
+    "#{@domain}api/v1/users/#{@user.token}/activate"
   end
 end

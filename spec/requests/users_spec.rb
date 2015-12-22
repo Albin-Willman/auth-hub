@@ -27,7 +27,6 @@ describe 'Users API' do
            },
            service: 'test-request'
       expect(response).to have_http_status(422)
-
       expect(response.body).to eq('false')
     end
 
@@ -39,7 +38,6 @@ describe 'Users API' do
            },
            service: 'test-request'
       expect(response).to have_http_status(422)
-
       expect(response.body).to eq('false')
     end
   end
@@ -106,29 +104,16 @@ describe 'Users API' do
   context 'update' do
     it 'can update a user' do
       token = create(:token)
-      patch '/api/v1/users',
-            {
-              user: {
-                name: 'new name',
-                email: 'new_email@example.com',
-                password: 'asdasd'
-              }
-            },
+      user_hash = {
+        name: 'new name',
+        email: 'new_email@example.com',
+        password: 'asdasd'
+      }
+      patch '/api/v1/users', { user: user_hash },
             authorization: build_auth(token.token)
       expect(response).to be_success
-      data = json['data']
-      expect(data['type']).to eq('users')
-      expect(data['id']).to eq(token.user_id.to_s)
-      attributes = data['attributes']
-      expect(attributes.length).to eq(2)
-      expect(attributes['name']).to eq('new name')
-      expect(attributes['email']).to eq('new_email@example.com')
-
       updated_user = User.find(token.user_id)
-
-      expect(updated_user.name).to eq('new name')
-      expect(updated_user.email).to eq('new_email@example.com')
-      expect(updated_user.authenticate('asdasd')).to be_truthy
+      verify_user_data(json['data'], updated_user, user_hash)
     end
 
     it 'can not update a user if the email is taken' do
@@ -170,5 +155,49 @@ describe 'Users API' do
       expect(response).to have_http_status(422)
       expect(response.body).to eq('{"activated":false}')
     end
+  end
+
+  context 'create' do
+    it 'can create a new user without auth' do
+      user_hash = {
+        name: 'new name',
+        email: 'new_email@example.com',
+        password: 'asdasd'
+      }
+      post '/api/v1/users', user: user_hash
+      expect(response).to be_success
+      new_user = User.find(json['data']['id'])
+      verify_user_data(json['data'], new_user, user_hash)
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
+      mail = ActionMailer::Base.deliveries.last
+      link = ActivationLinkBuilder.new('http://test/', new_user).build
+      expect(mail.body.encoded).to include(link)
+      expect(mail.to).to eq([new_user.email])
+      expect(mail.from).to eq(['salbin.reminders@gmail.com'])
+    end
+  end
+
+  def verify_user_data(data, db_user, user_hash)
+    verify_user_data_basics(data, db_user)
+    verify_user_attributes(data['attributes'], user_hash)
+    db_user.reload
+    verify_active_record_user(db_user, user_hash)
+  end
+
+  def verify_user_data_basics(data, db_user)
+    expect(data['type']).to eq('users')
+    expect(data['id']).to eq(db_user.id.to_s)
+  end
+
+  def verify_active_record_user(db_user, user_hash)
+    expect(db_user.name).to eq(user_hash[:name])
+    expect(db_user.email).to eq(user_hash[:email])
+    expect(db_user.authenticate(user_hash[:password])).to be_truthy
+  end
+
+  def verify_user_attributes(attributes, user_hash)
+    expect(attributes.length).to eq(2)
+    expect(attributes['name']).to eq(user_hash[:name])
+    expect(attributes['email']).to eq(user_hash[:email])
   end
 end
