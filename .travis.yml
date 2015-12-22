@@ -3,6 +3,8 @@ rvm:
   - "2.0"
   - "2.1"
   - "2.2"
+bundler_args: --without production
+cache: bundler
 services:
   - mysql
 before_script:
@@ -11,4 +13,4 @@ addons:
   code_climate:
     repo_token: a2cc334f7ed4701aaac111609b85b1c087afd4eab46bc1d9d5ace8d4621f1fc9
 env:
-- TEST_MYSQL_USER=travis
+- TEST_ENV_TRAVIS=true

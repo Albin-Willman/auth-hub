@@ -18,9 +18,9 @@ development:
 
 test:
   <<: *default
-  username: <%= ENV['TEST_MYSQL_USER'] || 'root' %>
+  username: <%= ENV['TEST_ENV_TRAVIS'] ? '' : 'root' %>
   database: albin_auth_test
-  socket: <%= db_socket %>
+  socket: <%= ENV['TEST_ENV_TRAVIS'] ? nil : db_socket %>
   password:
 
 
