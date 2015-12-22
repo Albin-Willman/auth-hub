@@ -1,11 +1,12 @@
-describe "Tokens API" do
+require 'rails_helper'
+
+describe 'Tokens API' do
   context 'index' do
     it 'retrieves a token list' do
       token = FactoryGirl.create(:token)
       FactoryGirl.create(:token, user: token.user)
       get "/api/v1/users/#{token.user_id}/tokens", nil,
-        :authorization => ActionController::HttpAuthentication::Token.encode_credentials(token.token)
-
+          authorization: build_auth(token.token)
 
       # test for the 200 status-code
       expect(response).to be_success
@@ -23,8 +24,8 @@ describe "Tokens API" do
     it 'fails if it has a bad token' do
       token = FactoryGirl.create(:token)
       FactoryGirl.create(:token, user: token.user)
-      get "/api/v1/users/#{token.user_id}/tokens", nil, 
-        :authorization => ActionController::HttpAuthentication::Token.encode_credentials('badtoken')
+      get "/api/v1/users/#{token.user_id}/tokens", nil,
+          authorization: build_auth('badtoken')
       expect(response).to have_http_status(401)
       expect(response.body).to eq("HTTP Token: Access denied.\n")
     end
@@ -34,22 +35,21 @@ describe "Tokens API" do
     it 'verifies a correct token' do
       token = FactoryGirl.create(:token)
       FactoryGirl.create(:token, user: token.user)
-      get "/api/v1/verify", nil,
-        :authorization => ActionController::HttpAuthentication::Token.encode_credentials(token.token)
-
+      get '/api/v1/verify', nil,
+          authorization: build_auth(token.token)
 
       # test for the 200 status-code
       expect(response).to be_success
 
       # check that the message attributes are the same.
-      expect(json).to eq({"verified"=>true})
+      expect(json).to eq('verified' => true)
     end
 
     it 'fails if it has a bad token' do
       token = FactoryGirl.create(:token)
       FactoryGirl.create(:token, user: token.user)
-      get "/api/v1/verify", nil, 
-        :authorization => ActionController::HttpAuthentication::Token.encode_credentials('badtoken')
+      get '/api/v1/verify', nil,
+          authorization: build_auth('badtoken')
       expect(response).to have_http_status(401)
       expect(response.body).to eq("HTTP Token: Access denied.\n")
     end
