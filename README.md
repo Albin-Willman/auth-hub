@@ -1,5 +1,9 @@
 # Auth hub
 
+[![Code Climate](https://codeclimate.com/github/Albin-Willman/auth-hub/badges/gpa.svg)](https://codeclimate.com/github/Albin-Willman/auth-hub)
+[![Test Coverage](https://codeclimate.com/github/Albin-Willman/auth-hub/badges/coverage.svg)](https://codeclimate.com/github/Albin-Willman/auth-hub/coverage)
+[![Issue Count](https://codeclimate.com/github/Albin-Willman/auth-hub/badges/issue_count.svg)](https://codeclimate.com/github/Albin-Willman/auth-hub)
+
 A shot at a single sign on service.
 
 The API tries to follow the [JsonApi 1.0](http://jsonapi.org/) standard, but sill a long way from completely compliant. Please feel free to report any violations.
