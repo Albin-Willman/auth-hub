@@ -3,6 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/Albin-Willman/auth-hub/badges/gpa.svg)](https://codeclimate.com/github/Albin-Willman/auth-hub)
 [![Test Coverage](https://codeclimate.com/github/Albin-Willman/auth-hub/badges/coverage.svg)](https://codeclimate.com/github/Albin-Willman/auth-hub/coverage)
 [![Issue Count](https://codeclimate.com/github/Albin-Willman/auth-hub/badges/issue_count.svg)](https://codeclimate.com/github/Albin-Willman/auth-hub)
+[![Build Status](https://travis-ci.org/Albin-Willman/auth-hub.svg?branch=master)](https://travis-ci.org/Albin-Willman/auth-hub)
 
 A shot at a single sign on service.
 
