@@ -20,7 +20,3 @@ end
 #
 #  index_tokens_on_user_id  (user_id)
 #
-# Foreign Keys
-#
-#  fk_rails_ac8a5d0441  (user_id => users.id)
-#
