@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :integer          not null, primary key
+#  email           :string(255)
+#  name            :string(255)
+#  password_digest :string(255)
+#  token           :string(255)
+#  active          :boolean          default(FALSE)
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
 require 'rails_helper'
 
 describe 'Users API' do
