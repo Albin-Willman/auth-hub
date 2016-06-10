@@ -50,7 +50,7 @@ describe 'Users API' do
              authorization: build_auth(token.token)
 
       expect(response).to be_success
-      expect(response.body).to eq('true')
+      expect(response.body).to eq('{"data":true}')
 
       expect(Token.find_by(id: token.id)).to be_nil
     end
