@@ -20,7 +20,7 @@ end
 group :development do
   gem 'spring'
   gem 'mysql2'
-  gem 'did_you_mean', '1.0.0'
+  gem 'did_you_mean', '1.0.1'
   gem 'bullet', '~> 4.14'
   gem 'binding_of_caller', '~> 0.7'
   gem 'better_errors', '~> 2.1'
