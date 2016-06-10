@@ -189,7 +189,7 @@ DEPENDENCIES
   bullet (~> 4.14)
   codeclimate-test-reporter
   database_cleaner (~> 1.5)
-  did_you_mean
+  did_you_mean (~> 1.0.0)
   factory_girl_rails (~> 4.0)
   faker
   has_secure_token
