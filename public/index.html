@@ -1,0 +1,22 @@
+
+<html>
+    <head>
+        <title>auth-hub-client</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    </head>
+    <body>
+        <div id="app"></div>
+        <script src="react/dist/react.min.js"></script>
+        <script src="react/dist/react-dom.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="app1.min.js"></script>
+        <script>
+        (function(app) {
+            var target = document.getElementById('app');
+            var payload = {title: 'auth-hub-client - prod'};
+            app.start(target, payload);
+        })(app);
+        </script>
+    </body>
+</html>
