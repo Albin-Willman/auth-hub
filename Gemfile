@@ -26,6 +26,7 @@ group :development do
   gem 'better_errors', '~> 2.1'
   gem 'annotate', '~> 2.6'
   gem 'web-console', '~> 2.0'
+  gem 'rubocop', require: false
 end
 
 group :test do

@@ -115,12 +115,16 @@ describe 'Users API' do
     end
 
     it 'returns the correct errors if something is wrong' do
-      Api::V1::ApplicationController.any_instance.stub(:current_user).and_return(NilUser.new)
+      allow_any_instance_of(application_controller).to receive(
+        :current_user
+      ).and_return(NilUser.new)
       token = create(:token)
       delete '/api/v1/users', nil,
              authorization: build_auth(token.token)
       expect(response).to have_http_status(422)
-      expect(response.body).to eq('{"errors":[{"id":"user","title":"User No user"}]}')
+      expect(response.body).to eq(
+        '{"errors":[{"id":"user","title":"User No user"}]}'
+      )
     end
   end
 
@@ -182,7 +186,8 @@ describe 'Users API' do
     context 'perform activation' do
       it 'can activate an inactivate user by its token' do
         expect(user.active).to be_falsy
-        patch "/api/v1/users/#{user.token}/activate", { user: { password: '123456' } }
+        patch "/api/v1/users/#{user.token}/activate",
+              user: { password: '123456' }
 
         user.reload
         expect(user.active).to be_truthy
@@ -192,14 +197,16 @@ describe 'Users API' do
 
       it 'sets the password on activation' do
         expect(user.authenticate('123456')).to eq(false)
-        patch "/api/v1/users/#{user.token}/activate", { user: { password: '123456' } }
+        patch "/api/v1/users/#{user.token}/activate",
+              user: { password: '123456' }
         expect(response).to be_success
         user.reload
         expect(user.authenticate('123456')).to eq(user)
       end
 
       it 'can not activate a user with a faulty token' do
-        patch "/api/v1/users/#{user.token}-fault/activate", { user: { password: '123456' } }
+        patch "/api/v1/users/#{user.token}-fault/activate",
+              user: { password: '123456' }
         user.reload
         expect(user.active).to be_falsy
         expect(response).to have_http_status(422)
@@ -242,6 +249,10 @@ describe 'Users API' do
       expect(error['id']).to eq('email')
       expect(error['title']).to eq('Email has already been taken')
     end
+  end
+
+  def application_controller
+    Api::V1::ApplicationController
   end
 
   def verify_user_data(data, db_user, user_hash)

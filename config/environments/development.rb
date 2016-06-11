@@ -37,16 +37,16 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
-  config.action_mailer.default_url_options = { :host => ENV["GMAIL_HOST"] }
+  config.action_mailer.default_url_options = { host: ENV['GMAIL_HOST'] }
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
+    address: 'smtp.gmail.com',
     port: 587,
-    domain: "example.com",
-    authentication: "plain",
+    domain: 'example.com',
+    authentication: 'plain',
     enable_starttls_auto: true,
-    user_name: ENV["GMAIL_USERNAME"],
-    password: ENV["GMAIL_PASSWORD"]
+    user_name: ENV['GMAIL_USERNAME'],
+    password: ENV['GMAIL_PASSWORD']
   }
 
   # Raises error for missing translations

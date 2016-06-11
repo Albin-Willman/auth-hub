@@ -13,7 +13,7 @@ module Api
       api :GET, '/v1/verify', 'Verify token'
       description 'Verifies that a token exists'
       def verify
-        render json: current_user , status: :ok
+        render json: current_user, status: :ok
       end
     end
   end
