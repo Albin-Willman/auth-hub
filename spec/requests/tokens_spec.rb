@@ -62,7 +62,9 @@ describe 'Tokens API' do
       expect(response).to be_success
 
       # check that the message attributes are the same.
-      expect(json).to eq('verified' => true)
+      res = json['data']
+      expect(res['type']).to eq('users')
+      expect(res['attributes']['email']).to eq('users')
     end
 
     it 'fails if it has a bad token' do
