@@ -64,7 +64,7 @@ describe 'Tokens API' do
       # check that the message attributes are the same.
       res = json['data']
       expect(res['type']).to eq('users')
-      expect(res['attributes']['email']).to eq('users')
+      expect(res['attributes']['email']).to eq('test@example.com')
     end
 
     it 'fails if it has a bad token' do
