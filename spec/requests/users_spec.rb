@@ -19,11 +19,11 @@ describe 'Users API' do
 
   context 'login' do
     it 'can log in an existing active user' do
-      user.activate!
+      user.activate!('12345')
       post '/api/v1/users/login',
            user: {
              email: user.email,
-             password: '123456'
+             password: '12345'
            },
            service: 'test-request'
       expect(response).to be_success
@@ -113,6 +113,15 @@ describe 'Users API' do
 
       expect(User.find_by(id: user.id)).to_not be_nil
     end
+
+    it 'returns the correct errors if something is wrong' do
+      Api::V1::ApplicationController.any_instance.stub(:current_user).and_return(NilUser.new)
+      token = create(:token)
+      delete '/api/v1/users', nil,
+             authorization: build_auth(token.token)
+      expect(response).to have_http_status(422)
+      expect(response.body).to eq('{"errors":[{"id":"user","title":"User No user"}]}')
+    end
   end
 
   context 'update' do
@@ -152,22 +161,50 @@ describe 'Users API' do
   end
 
   context 'activation' do
-    it 'can activate a unautorized user' do
+    it 'can find an inactivate user by its token' do
       expect(user.active).to be_falsy
       get "/api/v1/users/#{user.token}/activate"
 
       user.reload
-      expect(user.active).to be_truthy
+      expect(user.active).to be_falsy
       expect(response).to be_success
-      expect(response.body).to eq('{"activated":true}')
+      expect(json['data']['attributes']['email']).to eq('test@example.com')
     end
 
-    it 'can not activate a user with a faulty token' do
+    it 'can not find a user with a faulty token' do
       get "/api/v1/users/#{user.token}-fault/activate"
       user.reload
       expect(user.active).to be_falsy
       expect(response).to have_http_status(422)
       expect(response.body).to eq('{"activated":false}')
+    end
+
+    context 'perform activation' do
+      it 'can activate an inactivate user by its token' do
+        expect(user.active).to be_falsy
+        patch "/api/v1/users/#{user.token}/activate", { user: { password: '123456' } }
+
+        user.reload
+        expect(user.active).to be_truthy
+        expect(response).to be_success
+        expect(json['data']['attributes']['email']).to eq('test@example.com')
+      end
+
+      it 'sets the password on activation' do
+        expect(user.authenticate('123456')).to eq(false)
+        patch "/api/v1/users/#{user.token}/activate", { user: { password: '123456' } }
+        expect(response).to be_success
+        user.reload
+        expect(user.authenticate('123456')).to eq(user)
+      end
+
+      it 'can not activate a user with a faulty token' do
+        patch "/api/v1/users/#{user.token}-fault/activate", { user: { password: '123456' } }
+        user.reload
+        expect(user.active).to be_falsy
+        expect(response).to have_http_status(422)
+        expect(response.body).to eq('{"activated":false}')
+      end
     end
   end
 

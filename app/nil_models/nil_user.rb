@@ -9,14 +9,20 @@ class NilUser
   end
 
   def errors
-    ['No user']
+    error = ActiveModel::Errors.new(User.new)
+    error.add(:user, 'No user')
+    error
   end
 
   def tokens
     Token.none
   end
 
-  def activate!
+  def activate!(_)
+    false
+  end
+
+  def persisted?
     false
   end
 end

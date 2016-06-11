@@ -3,14 +3,13 @@ module Api
     # Handle requests concerning users
     class UsersController < Api::V1::ApplicationController
       include ErrorSerializer
-      NON_USER_ACTIONS = [:create, :activate, :login]
+      NON_USER_ACTIONS = [:create, :activate, :perform_activation, :login]
       before_action :authenticate, except: NON_USER_ACTIONS
 
       api :POST, '/v1/users/', 'Create new user'
       description 'Creates and returns a new user.'
       param :user, Hash, desc: 'User attributes', required: true do
         param :email, String, desc: 'Email', required: true
-        param :password, String, desc: 'Password', required: true
         param :name, String, desc: 'Name'
       end
       def create
@@ -26,10 +25,24 @@ module Api
 
       api :GET, '/v1/users/:token/activate', 'Activate user'
       description 'Activates a user acount.'
+      param :user, Hash, desc: 'User attributes', required: true do
+        param :password, String, desc: 'Password', required: true
+      end
+      def perform_activation
+        @user = User.find_by_token(params[:token])
+        if @user.activate!(params[:user][:password])
+          render json: @user, status: :ok
+        else
+          render json: { activated: false }, status: :unprocessable_entity
+        end
+      end
+
+      api :PATCH, '/v1/users/:token/activate', 'Activate user'
+      description 'Fetches an inactive user.'
       def activate
         @user = User.find_by_token(params[:token])
-        if @user.activate!
-          render json: { activated: true }, status: :ok
+        if @user.persisted?
+          render json: @user, status: :ok
         else
           render json: { activated: false }, status: :unprocessable_entity
         end

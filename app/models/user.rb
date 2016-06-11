@@ -1,9 +1,12 @@
 # Users
+require 'securerandom'
 class User < ActiveRecord::Base
   has_secure_password
   has_secure_token
   validates :email, uniqueness: true, presence: true
   has_many :tokens, dependent: :destroy
+
+  before_validation :set_random_password
 
   scope :active, -> { where(active: true) }
 
@@ -11,9 +14,15 @@ class User < ActiveRecord::Base
     find_by(token: token) || NilUser.new
   end
 
-  def activate!
-    update_attributes!(active: true)
+  def activate!(new_password)
+    update_attributes!(active: true, password: new_password)
     regenerate_token && true
+  end
+
+  private
+
+  def set_random_password
+    self.password = SecureRandom.base64(50) if password.blank?
   end
 end
 
