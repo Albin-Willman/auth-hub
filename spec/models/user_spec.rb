@@ -23,20 +23,20 @@ describe User do
   context 'Activation' do
     it 'Can be activated' do
       expect(user.active).to eq(false)
-      user.activate!
+      user.activate!('1234')
       expect(user.active).to eq(true)
     end
 
     it 'Gets a new token when activated' do
       token = user.token
-      user.activate!
+      user.activate!('1234')
       expect(user.token).to_not eq(token)
     end
 
     it 'Has a scope that only find active users' do
       user1 = user
       create(:user, email: 'test2@example.com')
-      user1.activate!
+      user1.activate!('1234')
       expect(User.count).to eq(2)
       expect(User.active.count).to eq(1)
     end
@@ -44,6 +44,7 @@ describe User do
 
   context 'Authentification' do
     it 'can verify a correct password' do
+      user.activate!('123456')
       expect(user.authenticate('123456')).to eq(user)
     end
 

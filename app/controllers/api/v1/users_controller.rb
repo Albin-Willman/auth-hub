@@ -3,14 +3,13 @@ module Api
     # Handle requests concerning users
     class UsersController < Api::V1::ApplicationController
       include ErrorSerializer
-      NON_USER_ACTIONS = [:create, :activate, :login]
-      before_action :authenticate, except: NON_USER_ACTIONS
+      ALL_ACCESS = [:create, :login].freeze
+      before_action :authenticate, except: ALL_ACCESS
 
       api :POST, '/v1/users/', 'Create new user'
       description 'Creates and returns a new user.'
       param :user, Hash, desc: 'User attributes', required: true do
         param :email, String, desc: 'Email', required: true
-        param :password, String, desc: 'Password', required: true
         param :name, String, desc: 'Name'
       end
       def create
@@ -21,17 +20,6 @@ module Api
         else
           render json: ErrorSerializer.serialize(@user.errors),
                  status: :unprocessable_entity
-        end
-      end
-
-      api :GET, '/v1/users/:token/activate', 'Activate user'
-      description 'Activates a user acount.'
-      def activate
-        @user = User.find_by_token(params[:token])
-        if @user.activate!
-          render json: { activated: true }, status: :ok
-        else
-          render json: { activated: false }, status: :unprocessable_entity
         end
       end
 

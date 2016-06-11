@@ -4,7 +4,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :users, only: [:create, :update, :destroy] do
         collection do
-          get ':token/activate', to: 'users#activate'
+          get ':token/activate', to: 'activation#activate'
+          patch ':token/activate', to: 'activation#perform_activation'
           post 'login'
         end
         member do
