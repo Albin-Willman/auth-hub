@@ -17,6 +17,12 @@ Other apis/apps/services can use this to sign their users on here and use this t
 * Rails API
 * Rails 4.2
 
+## Works well with
+
+* Frontend admin interface: [Auth hub client](https://github.com/Albin-Willman/auth-hub-client)
+* Frontend integration in other projects: [Auth hub module](https://github.com/Albin-Willman/auth-hub-module)
+* Backend integration in other projects: Auth hub gem (Comming soon)
+
 ## Contributing
 
 We would love if you'd like to help us build and improve this product for the benefit of everyone. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org/) code of conduct.
